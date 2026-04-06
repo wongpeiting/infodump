@@ -228,13 +228,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
 }
 
 .speech-bubble-down::after{
-  content:'';position:absolute;bottom:-14px;left:70%;
+  content:'';position:absolute;bottom:-14px;left:50%;margin-left:-10px;
   width:0;height:0;
   border-left:10px solid transparent;border-right:10px solid transparent;
   border-top:14px solid #fff;
 }
 .speech-bubble-down::before{
-  content:'';position:absolute;bottom:-16px;left:70%;margin-left:-1px;
+  content:'';position:absolute;bottom:-16px;left:50%;margin-left:-11px;
   width:0;height:0;
   border-left:11px solid transparent;border-right:11px solid transparent;
   border-top:16px solid #e2e8f0;
@@ -282,8 +282,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
     <!-- HTML speech bubble overlay (works on iOS unlike SVG foreignObject) -->
     <div id="speech-bubble-overlay" class="speech-bubble speech-bubble-right" style="position:absolute;z-index:5;display:none;max-width:320px">
       <h2>Hi. I&rsquo;m GPT-2.</h2>
-      <p>OpenAI released me in February 2019 and gave me away, free for anyone to download, take apart and learn&nbsp;from.</p>
-      <p>I wasn&rsquo;t very smart. But I was <em>open</em>. That used to mean something in this&nbsp;industry.</p>
+      <p>OpenAI released me in 2019. I wasn&rsquo;t very smart. But I was <em>open</em>, free for anyone to download, take apart and learn from. That used to mean something in this industry.</p>
       <p class="kicker">Then things got&nbsp;complicated.</p>
     </div>
   </div>
@@ -616,7 +615,11 @@ function renderDots(data) {
         d3.select(this).attr('stroke', '#1e293b').attr('stroke-width', 1.5);
         tip.style('display', 'block').html(`<strong>${d.model}</strong><br>${d.lab}<br>MMLU ${d.mmlu} · ${d.params}B params<br>${d.date.slice(0,7)}${d.ow ? ' · open-weight' : ''}${d.estimated ? ' · estimated' : ''}`);
       })
-      .on('mousemove', ev => tip.style('left', (ev.pageX + 12) + 'px').style('top', (ev.pageY - 8) + 'px'))
+      .on('mousemove', ev => {
+        const tipW = 250;
+        const left = Math.min(ev.pageX + 12, window.innerWidth - tipW - 10);
+        tip.style('left', left + 'px').style('top', (ev.pageY - 8) + 'px');
+      })
       .on('mouseout', function() {
         d3.select(this).attr('stroke', '#fff').attr('stroke-width', 1.5);
         tip.style('display', 'none');
@@ -683,8 +686,7 @@ function drawGPT2Character(layer, cx, cy, size) {
       .attr('class', 'speech-bubble speech-bubble-right')
       .html(`
         <h2>Hi. I\u2019m GPT-2.</h2>
-        <p>OpenAI released me in February 2019 and gave me away, free for anyone to download, take apart and learn\u00a0from.</p>
-        <p>I wasn\u2019t very smart. But I was <em>open</em>. That used to mean something in this\u00a0industry.</p>
+        <p>OpenAI released me in 2019. I wasn\u2019t very smart. But I was <em>open</em>, free for anyone to download, take apart and learn from. That used to mean something in this industry.</p>
         <p class="kicker">Then things got\u00a0complicated.</p>
       `);
   }
@@ -731,12 +733,12 @@ function goToStep(step, data) {
     if (mobile) {
       bubble.style.display = 'block';
       bubble.style.opacity = 1;
-      bubble.style.left = '5%';
-      bubble.style.right = '5%';
-      bubble.style.width = 'auto';
-      bubble.style.maxWidth = '90vw';
-      bubble.style.transform = 'none';
-      bubble.style.top = '3vh';
+      bubble.style.left = '50%';
+      bubble.style.right = 'auto';
+      bubble.style.width = '';
+      bubble.style.maxWidth = '75vw';
+      bubble.style.transform = 'translateX(-50%)';
+      bubble.style.top = '8vh';
       bubble.className = 'speech-bubble speech-bubble-down';
     } else {
       bubble.style.display = 'none';
@@ -749,7 +751,7 @@ function goToStep(step, data) {
     annoLayer.selectAll('.gpt2-character').remove();
     const charSize = mobile ? 55 : 90;
     const charX = mobile ? (W / 2 - margin.left) : iw / 2;
-    const charY = mobile ? ih * 0.62 : ih / 2 - 20;
+    const charY = mobile ? ih * 0.72 : ih / 2 - 20;
     drawGPT2Character(annoLayer, charX, charY, charSize);
   }
 
@@ -992,7 +994,7 @@ function initScroll(data) {
   const gpt2TargetX = gpt2 ? x(new Date(gpt2.date)) + jitter(gpt2.model, 5) : iw * 0.05;
   const gpt2TargetY = gpt2 ? y(gpt2.mmlu) + jitter(gpt2.model + 'y', 4) : ih * 0.8;
   const startX = mobile ? (W / 2 - margin.left) : iw / 2;
-  const startY = mobile ? ih * 0.62 : ih / 2 - 20;
+  const startY = mobile ? ih * 0.72 : ih / 2 - 20;
   const charSize = mobile ? 55 : 90;
   // GPT-2 diamond body spans 2*charSize in the character drawing.
   // The actual dot on the chart has size r(1.5). We need the diamond body to match that.
@@ -1054,11 +1056,13 @@ function initScroll(data) {
         axisLayer.attr('opacity', chartOpacity);
         document.getElementById('headline').style.opacity = chartOpacity;
         document.getElementById('scroll-hint').style.opacity = Math.max(0, 0.6 - progress * 3);
-        // Fade speech bubble as character shrinks
-        const bubbleEl = document.getElementById('speech-bubble-overlay');
-        bubbleEl.style.opacity = Math.max(0, 1 - progress * 2.5);
-        if (progress > 0.4) bubbleEl.style.display = 'none';
-        else bubbleEl.style.display = 'block';
+        // Fade speech bubble as character shrinks (mobile only)
+        if (mobile) {
+          const bubbleEl = document.getElementById('speech-bubble-overlay');
+          bubbleEl.style.opacity = Math.max(0, 1 - progress * 2.5);
+          if (progress > 0.4) bubbleEl.style.display = 'none';
+          else bubbleEl.style.display = 'block';
+        }
         dots.attr('fill', GREY).attr('opacity', chartOpacity * 0.6)
           .attr('stroke', '#fff').attr('stroke-width', 1.5);
       }
