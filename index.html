@@ -711,9 +711,12 @@ function goToStep(step, data) {
     bubble.style.display = 'block';
     bubble.style.opacity = 1;
     if (mobile) {
-      bubble.style.left = '50%';
-      bubble.style.transform = 'translateX(-50%)';
-      bubble.style.top = '5vh';
+      bubble.style.left = '5%';
+      bubble.style.right = '5%';
+      bubble.style.width = 'auto';
+      bubble.style.maxWidth = '90vw';
+      bubble.style.transform = 'none';
+      bubble.style.top = '3vh';
       bubble.className = 'speech-bubble speech-bubble-down';
     } else {
       bubble.style.left = (margin.left + charX - 360) + 'px';
