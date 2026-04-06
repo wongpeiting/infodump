@@ -227,6 +227,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
   color:#1a1a1a;font-weight:700;margin-top:0.3rem;padding-bottom:0;
 }
 
+.speech-bubble-down::after{
+  content:'';position:absolute;bottom:-14px;left:70%;
+  width:0;height:0;
+  border-left:10px solid transparent;border-right:10px solid transparent;
+  border-top:14px solid #fff;
+}
+.speech-bubble-down::before{
+  content:'';position:absolute;bottom:-16px;left:70%;margin-left:-1px;
+  width:0;height:0;
+  border-left:11px solid transparent;border-right:11px solid transparent;
+  border-top:16px solid #e2e8f0;
+}
+
 /* ── Mobile ── */
 @media(max-width:700px){
   .step{justify-content:flex-start!important;padding-left:1.2rem!important;min-height:110vh!important}
@@ -266,6 +279,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
       <p class="standfirst">Ranked by capabilities, sized by parameters used for training</p>
     </div>
     <div class="chart-legend" id="legend"></div>
+    <!-- HTML speech bubble overlay (works on iOS unlike SVG foreignObject) -->
+    <div id="speech-bubble-overlay" class="speech-bubble speech-bubble-down" style="position:absolute;z-index:5;display:none;left:50%;transform:translateX(-70%);top:8vh;max-width:320px">
+      <h2>Hi. I&rsquo;m GPT-2.</h2>
+      <p>Back in February 2019, it was just me. OpenAI built me and gave me away &ndash; free for anyone to download, take apart and learn&nbsp;from.</p>
+      <p>I wasn&rsquo;t very smart. But I was <em>open</em>. That used to mean something in this&nbsp;industry.</p>
+      <p class="kicker">Then things got&nbsp;complicated.</p>
+    </div>
   </div>
 
   <div class="scrolly__steps">
@@ -692,10 +712,13 @@ function drawGPT2Character(layer, cx, cy, size) {
 }
 
 function goToStep(step, data) {
-  if (step === currentStep) return;
+  // Allow re-entry for step 0 (scroll-back reset)
+  if (step === currentStep && step !== 0) return;
   currentStep = step;
   // Clear annotations but keep the GPT-2 character
   annoLayer.selectAll('*:not(.gpt2-character)').remove();
+  // Hide speech bubble on all non-zero steps
+  if (step !== 0) document.getElementById('speech-bubble-overlay').style.display = 'none';
   const t = d3.transition().duration(700).ease(d3.easeCubicOut);
   const mobile = W < 700;
   const legendEl = document.getElementById('legend');
@@ -706,6 +729,7 @@ function goToStep(step, data) {
     axisLayer.attr('opacity', 0);
     document.getElementById('headline').style.opacity = 0;
     document.getElementById('scroll-hint').style.opacity = 0.6;
+    document.getElementById('speech-bubble-overlay').style.display = 'block';
     // Force reset ALL dot properties — fill, opacity, stroke
     dots.interrupt()
       .attr('fill', GREY).attr('opacity', 0)
@@ -746,7 +770,9 @@ function goToStep(step, data) {
 
     dots.transition(t)
       .attr('fill', d => d.ow ? OPEN_COLOR : CLOSED_COLOR)
-      .attr('opacity', 0.75);
+      .attr('opacity', 0.75)
+      .attr('stroke', '#fff').attr('stroke-width', 1.5);
+    dots.style('pointer-events', 'auto').style('cursor', 'pointer');
   }
 
   else if (step === 3) {
@@ -983,7 +1009,8 @@ function initScroll(data) {
       lastProgress = progress;
 
       if (progress <= 0.01) {
-        // Fully at step 0 — hide everything, show character full size
+        // Fully at step 0 — force full reset including character recreation
+        if (currentStep !== 0) goToStep(0, data);
         axisLayer.attr('opacity', 0);
         document.getElementById('headline').style.opacity = 0;
         document.getElementById('scroll-hint').style.opacity = 0.6;
@@ -1016,6 +1043,11 @@ function initScroll(data) {
         axisLayer.attr('opacity', chartOpacity);
         document.getElementById('headline').style.opacity = chartOpacity;
         document.getElementById('scroll-hint').style.opacity = Math.max(0, 0.6 - progress * 3);
+        // Fade speech bubble as character shrinks
+        const bubbleEl = document.getElementById('speech-bubble-overlay');
+        bubbleEl.style.opacity = Math.max(0, 1 - progress * 2.5);
+        if (progress > 0.4) bubbleEl.style.display = 'none';
+        else bubbleEl.style.display = 'block';
         dots.attr('fill', GREY).attr('opacity', chartOpacity * 0.6)
           .attr('stroke', '#fff').attr('stroke-width', 1.5);
       }
