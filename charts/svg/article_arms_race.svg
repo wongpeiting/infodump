@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="566.64pt" height="207.224844pt" viewBox="0 0 566.64 207.224844" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-04-05T21:29:47.980367</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.7, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 207.224844 
+L 566.64 207.224844 
+L 566.64 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.2 183.002813 
+L 559.44 183.002813 
+L 559.44 22.482813 
+L 7.2 22.482813 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 27.1125 183.002813 
+L 61.6275 183.002813 
+L 61.6275 181.895778 
+L 27.1125 181.895778 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 80.2125 183.002813 
+L 114.7275 183.002813 
+L 114.7275 181.342261 
+L 80.2125 181.342261 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 133.3125 183.002813 
+L 167.8275 183.002813 
+L 167.8275 180.788744 
+L 133.3125 180.788744 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 186.4125 183.002813 
+L 220.9275 183.002813 
+L 220.9275 180.788744 
+L 186.4125 180.788744 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 239.5125 183.002813 
+L 274.0275 183.002813 
+L 274.0275 169.718399 
+L 239.5125 169.718399 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 292.6125 183.002813 
+L 327.1275 183.002813 
+L 327.1275 149.791778 
+L 292.6125 149.791778 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 345.7125 183.002813 
+L 380.2275 183.002813 
+L 380.2275 100.528744 
+L 345.7125 100.528744 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 398.8125 183.002813 
+L 433.3275 183.002813 
+L 433.3275 42.409433 
+L 398.8125 42.409433 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #1e293b"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 451.9125 183.002813 
+L 486.4275 183.002813 
+L 486.4275 52.372744 
+L 451.9125 52.372744 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 505.0125 183.002813 
+L 539.5275 183.002813 
+L 539.5275 149.791778 
+L 505.0125 149.791778 
+z
+" clip-path="url(#p08d0a00708)" style="fill: #b0b8c4"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="md57908dbb5" d="M 0 0 
+L 0 3.5 
+" style="stroke: #94a3b8; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#md57908dbb5" x="97.47" y="183.002813" style="fill: #94a3b8; stroke: #94a3b8; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 11px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #94a3b8" x="97.47" y="197.8575" transform="rotate(-0 97.47 197.8575)">2018</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#md57908dbb5" x="203.67" y="183.002813" style="fill: #94a3b8; stroke: #94a3b8; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 11px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #94a3b8" x="203.67" y="197.8575" transform="rotate(-0 203.67 197.8575)">2020</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#md57908dbb5" x="309.87" y="183.002813" style="fill: #94a3b8; stroke: #94a3b8; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 11px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #94a3b8" x="309.87" y="197.8575" transform="rotate(-0 309.87 197.8575)">2022</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#md57908dbb5" x="416.07" y="183.002813" style="fill: #94a3b8; stroke: #94a3b8; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 11px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #94a3b8" x="416.07" y="197.8575" transform="rotate(-0 416.07 197.8575)">2024</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#md57908dbb5" x="522.27" y="183.002813" style="fill: #94a3b8; stroke: #94a3b8; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 11px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #94a3b8" x="522.27" y="197.8575" transform="rotate(-0 522.27 197.8575)">2026</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1"/>
+    <g id="ytick_2"/>
+    <g id="ytick_3"/>
+    <g id="ytick_4"/>
+    <g id="ytick_5"/>
+    <g id="ytick_6"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 7.2 183.002813 
+L 559.44 183.002813 
+" style="fill: none; stroke: #e5e7eb; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="44.37" y="179.128192" transform="rotate(-0 44.37 179.128192)">2</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="97.47" y="178.574675" transform="rotate(-0 97.47 178.574675)">3</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="150.57" y="178.021157" transform="rotate(-0 150.57 178.021157)">4</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="203.67" y="178.021157" transform="rotate(-0 203.67 178.021157)">4</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="256.77" y="166.950812" transform="rotate(-0 256.77 166.950812)">24</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="309.87" y="147.024192" transform="rotate(-0 309.87 147.024192)">60</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="362.97" y="97.761157" transform="rotate(-0 362.97 97.761157)">149</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #1e293b" x="416.07" y="39.641847" transform="rotate(-0 416.07 39.641847)">254</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="469.17" y="49.605157" transform="rotate(-0 469.17 49.605157)">236</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 9px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: middle; fill: #64748b" x="522.27" y="147.024192" transform="rotate(-0 522.27 147.024192)">60</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Helvetica Neue', 'Arial', sans-serif; text-anchor: start; fill: #1e293b" x="7.2" y="16.482813" transform="rotate(-0 7.2 16.482813)">New AI models per year</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p08d0a00708">
+   <rect x="7.2" y="22.482813" width="552.24" height="160.52"/>
+  </clipPath>
+ </defs>
+</svg>

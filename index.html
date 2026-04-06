@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI Race</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;overflow-x:hidden}
+
+/* ── Scrolly container ── */
+.scrolly{position:relative}
+.scrolly__graphic{position:sticky;top:0;width:100%;height:100vh;display:flex;align-items:center;justify-content:center;z-index:1}
+.scrolly__graphic svg{display:block}
+
+.scrolly__steps{position:relative;z-index:2;pointer-events:none}
+.step{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.step:first-child{min-height:95vh}
+.step:last-child{min-height:70vh}
+
+.step__content{pointer-events:auto;max-width:380px;padding:1.6rem 2rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);border-radius:8px;box-shadow:0 1px 8px rgba(0,0,0,0.06)}
+.step__content h2{font-size:1.65rem;font-weight:800;line-height:1.18;margin-bottom:0.5rem;letter-spacing:-0.02em}
+.step__content p{font-size:0.92rem;line-height:1.6;color:#475569}
+.step__content .highlight{font-weight:700}
+.step__content .src{font-size:0.72rem;color:#94a3b8;margin-top:0.6rem}
+.step__content .src a{color:#94a3b8}
+
+.step{justify-content:flex-start;padding-left:20vw}
+
+/* ── Headline overlay ── */
+.chart-headline{
+  position:absolute;top:0;left:0;right:0;
+  padding:2.5rem 5vw 0;z-index:4;
+  pointer-events:none;
+  transition:opacity 0.5s;
+}
+.chart-headline .kicker{
+  font-size:0.7rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:#6d28d9;margin-bottom:0.4rem;
+}
+.chart-headline h1{
+  font-size:1.1rem;font-weight:700;
+  line-height:1.3;letter-spacing:0;
+  margin:0 0 0.15rem;white-space:nowrap;
+}
+.chart-headline .standfirst{
+  font-size:0.8rem;line-height:1.4;
+  color:#64748b;margin:0;font-weight:400;
+}
+.chart-headline .byline{
+  font-size:0.75rem;color:#94a3b8;
+}
+
+/* ── Chart chrome ── */
+.chart-legend{position:absolute;bottom:12px;right:16px;font-size:13px;color:#94a3b8;display:flex;gap:24px;align-items:center;z-index:3}
+.chart-legend span{display:flex;align-items:center;gap:6px}
+.param-legend{display:flex;align-items:flex-end;gap:1px}
+.param-legend circle{stroke:#b0b8c4;stroke-width:1.2;fill:none}
+
+/* ── Article body ── */
+.article{background:#fff;position:relative;z-index:5}
+.article__content{max-width:680px;margin:0 auto;padding:3rem 1.2em 2rem}
+.article__header{padding-bottom:2rem;margin-bottom:1.5rem;border-bottom:1px solid #e5e7eb}
+.article__header .kicker{font-family:'Inter',system-ui,sans-serif;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#6d28d9;margin-bottom:0.4rem}
+.article__header h1{font-family:'Inter',system-ui,sans-serif;font-size:3.2rem;font-weight:800;line-height:1.08;letter-spacing:-0.02em;margin:0 0 0.8rem}
+.article__header .standfirst{font-family:'Inter',system-ui,sans-serif;font-size:1.25rem;line-height:1.55;color:#475569;margin:0}
+.article__content p{font-family:'Lora',Georgia,serif;font-size:1.05rem;line-height:1.75;margin:0;padding-bottom:1.15em;color:#1a1a1a}
+.article__content h2{font-size:1.5rem;font-weight:800;margin:2.2em 0 0.4em;line-height:1.25;letter-spacing:-0.02em}
+.article__content a{color:#4f46e5}
+.article__content .drop-cap::first-letter{float:left;font-size:3.6em;line-height:0.8;padding:0.05em 0.12em 0 0;font-weight:700;color:#1e293b}
+.article__chart{margin:2em 0;text-align:center}
+.article__chart img{max-width:100%;height:auto}
+.article__chart figcaption{font-family:'Inter',system-ui,sans-serif;font-size:0.7rem;color:#94a3b8;margin-top:0.5em}
+.article__content .separator{width:40px;height:1px;background:#cbd5e1;margin:2em auto;border:none}
+.article__footer{max-width:680px;margin:0 auto;padding:2em 1.2em 3em;font-size:0.75rem;color:#94a3b8;line-height:1.8}
+.article__footer a{color:#64748b}
+@media(max-width:700px){
+  .article__content{padding:2rem 1rem 1.5rem}
+  .article__content p{font-size:0.95rem}
+  .article__content h2{font-size:1.3rem}
+}
+
+/* ── ai2html ── */
+#g-china-share-box{container-type:inline-size;container-name:g-china-share-box}
+#g-china-share-box,#g-china-share-box .g-artboard{margin:0}
+#g-china-share-box p{margin:0}
+#g-china-share-box .g-aiAbs{position:absolute}
+#g-china-share-box .g-aiImg{position:absolute;top:0;display:block;width:100%!important}
+#g-china-share-box .g-aiPointText p{white-space:nowrap}
+#g-china-share-full{position:relative;overflow:hidden;display:none}
+@container g-china-share-box (width >= 500px){#g-china-share-full{display:block}}
+#g-china-share-full p{font-family:'Source Sans 3','Source Sans Pro',sans-serif;font-weight:normal;line-height:36px;font-size:12px;color:rgb(0,0,0)}
+#g-china-share-full .g-pstyle0{font-weight:900;line-height:32px;height:32px;font-size:27px;color:rgb(30,41,59)}
+#g-china-share-full .g-pstyle1{font-weight:400;line-height:19px;height:19px;font-size:16px}
+#g-china-share-full .g-pstyle2{font-weight:600;line-height:29px;height:29px;font-size:24px;color:rgb(220,38,38)}
+#g-china-share-full .g-pstyle3{font-weight:300;line-height:17px;height:17px;font-size:14px;color:rgb(148,163,184)}
+#g-china-share-full .g-pstyle4{font-weight:300}
+#g-china-share-full .g-cstyle0{color:rgb(220,38,38)}
+#g-china-share-mobile{position:relative;overflow:hidden}
+@container g-china-share-box (width >= 500px){#g-china-share-mobile{display:none}}
+#g-china-share-mobile p{font-family:'Source Sans 3','Source Sans Pro',sans-serif;font-weight:normal;line-height:36px;font-size:10px;color:rgb(0,0,0)}
+#g-china-share-mobile .g-pstyle0{font-weight:900;line-height:32px;height:32px;font-size:27px;color:rgb(30,41,59)}
+#g-china-share-mobile .g-pstyle1{font-weight:400;line-height:19px;height:19px;font-size:16px}
+#g-china-share-mobile .g-pstyle2{font-weight:600;line-height:19px;height:19px;font-size:15px;color:rgb(220,38,38)}
+#g-china-share-mobile .g-pstyle3{font-weight:300;line-height:16px;height:16px;font-size:13px;color:rgb(148,163,184)}
+#g-china-share-mobile .g-pstyle4{font-weight:300}
+#g-china-share-mobile .g-cstyle0{color:rgb(220,38,38)}
+
+/* ── ai2html: openai_trails ── */
+#g-openai_trails-box{container-type:inline-size;container-name:g-openai_trails-box}
+#g-openai_trails-box,#g-openai_trails-box .g-artboard{margin:0}
+#g-openai_trails-box p{margin:0}
+#g-openai_trails-box .g-aiAbs{position:absolute}
+#g-openai_trails-box .g-aiImg{position:absolute;top:0;display:block;width:100%!important}
+#g-openai_trails-box .g-aiPointText p{white-space:nowrap}
+#g-openai_trails-full{position:relative;overflow:hidden;display:none}
+@container g-openai_trails-box (width >= 500px){#g-openai_trails-full{display:block}}
+#g-openai_trails-full p{font-family:'Source Sans 3','Source Sans Pro',sans-serif;font-weight:normal;line-height:17px;font-size:14px;color:rgb(255,0,0)}
+#g-openai_trails-full .g-pstyle0{font-weight:900;line-height:32px;height:32px;font-size:27px;color:rgb(30,41,59)}
+#g-openai_trails-full .g-pstyle1{font-weight:400;line-height:20px;height:20px;font-size:17px;color:rgb(0,0,0)}
+#g-openai_trails-full .g-pstyle2{font-weight:400;height:17px;color:rgb(148,163,184)}
+#g-openai_trails-full .g-pstyle3{font-weight:700;line-height:15px;height:15px;font-size:13px;color:rgb(21,101,192)}
+#g-openai_trails-full .g-pstyle4{font-weight:400;line-height:15px;height:15px;font-size:13px;color:rgb(21,101,192)}
+#g-openai_trails-full .g-pstyle5{font-weight:700;line-height:15px;height:15px;font-size:13px;color:rgb(252,141,98)}
+#g-openai_trails-full .g-pstyle6{font-weight:600;line-height:16px;height:16px;font-size:13px;color:rgb(148,163,184)}
+#g-openai_trails-full .g-pstyle7{font-weight:400;line-height:15px;height:15px;font-size:13px;color:rgb(252,141,98)}
+#g-openai_trails-full .g-pstyle8{font-weight:400;height:17px}
+#g-openai_trails-full .g-pstyle9{font-weight:700;height:17px}
+#g-openai_trails-full .g-pstyle10{font-weight:700;line-height:15px;height:15px;font-size:13px;color:rgb(102,194,165)}
+#g-openai_trails-full .g-pstyle11{font-weight:400;line-height:15px;height:15px;font-size:13px;color:rgb(102,194,165)}
+#g-openai_trails-full .g-pstyle12{font-weight:300;line-height:36px;font-size:12px;text-align:right;color:rgb(0,0,0)}
+#g-openai_trails-full .g-cstyle0{font-weight:400}
+#g-openai_trails-mobile{position:relative;overflow:hidden}
+@container g-openai_trails-box (width >= 500px){#g-openai_trails-mobile{display:none}}
+#g-openai_trails-mobile p{font-family:'Source Sans 3','Source Sans Pro',sans-serif;font-weight:normal;line-height:14px;font-size:12px;color:rgb(255,0,0)}
+#g-openai_trails-mobile .g-pstyle0{font-weight:900;line-height:30px;height:30px;font-size:27px;color:rgb(30,41,59)}
+#g-openai_trails-mobile .g-pstyle1{font-weight:400;line-height:19px;height:19px;font-size:17px;color:rgb(0,0,0)}
+#g-openai_trails-mobile .g-pstyle2{font-weight:400;line-height:12px;height:12px;font-size:10px;color:rgb(148,163,184)}
+#g-openai_trails-mobile .g-pstyle3{font-weight:700;line-height:16px;height:16px;font-size:13px;color:rgb(21,101,192)}
+#g-openai_trails-mobile .g-pstyle4{font-weight:400;height:14px;color:rgb(21,101,192)}
+#g-openai_trails-mobile .g-pstyle5{font-weight:700;line-height:16px;height:16px;font-size:13px;color:rgb(252,141,98)}
+#g-openai_trails-mobile .g-pstyle6{font-weight:600;line-height:16px;height:16px;font-size:14px;color:rgb(148,163,184)}
+#g-openai_trails-mobile .g-pstyle7{font-weight:400;height:14px;color:rgb(252,141,98)}
+#g-openai_trails-mobile .g-pstyle8{font-weight:700;line-height:16px;height:16px;font-size:13px;color:rgb(102,194,165)}
+#g-openai_trails-mobile .g-pstyle9{font-weight:400;height:14px;color:rgb(102,194,165)}
+#g-openai_trails-mobile .g-pstyle10{font-weight:400;height:14px}
+#g-openai_trails-mobile .g-pstyle11{font-weight:700;height:14px}
+#g-openai_trails-mobile .g-pstyle12{font-weight:300;line-height:36px;font-size:11px;color:rgb(0,0,0)}
+#g-openai_trails-mobile .g-cstyle0{font-weight:400}
+
+/* ── Scroll hint arrow ── */
+.scroll-hint{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:100;opacity:0.6;
+  animation:bounce 2s ease-in-out infinite;
+  transition:opacity 0.5s;
+  pointer-events:none;
+}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ── Waving arms ── */
+@keyframes wave-left {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-20deg); }
+  75% { transform: rotate(15deg); }
+}
+@keyframes wave-right {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(15deg); }
+  70% { transform: rotate(-20deg); }
+}
+.wave-left { animation: wave-left 1.2s ease-in-out infinite; }
+.wave-right { animation: wave-right 1.2s ease-in-out infinite 0.15s; }
+
+/* ── Speech bubble ── */
+.speech-bubble{
+  pointer-events:auto;
+  max-width:340px;
+  padding:1.6rem 2rem;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.08);
+  position:relative;
+  border:1.5px solid #e2e8f0;
+}
+.speech-bubble-right::after{
+  content:'';
+  position:absolute;
+  bottom:12px;
+  right:-14px;
+  width:0;height:0;
+  border-top:10px solid transparent;
+  border-bottom:10px solid transparent;
+  border-left:14px solid #fff;
+}
+.speech-bubble-right::before{
+  content:'';
+  position:absolute;
+  bottom:11px;
+  right:-16px;
+  width:0;height:0;
+  border-top:11px solid transparent;
+  border-bottom:11px solid transparent;
+  border-left:16px solid #e2e8f0;
+}
+.speech-bubble h2{
+  font-size:1.5rem;font-weight:800;line-height:1.18;
+  margin-bottom:0.5rem;letter-spacing:-0.02em;
+}
+.speech-bubble p{
+  font-size:0.9rem;line-height:1.6;color:#475569;
+}
+.speech-bubble em{
+  font-style:italic;color:#8da0cb;font-weight:600;
+}
+.speech-bubble .kicker{
+  color:#1a1a1a;font-weight:700;margin-top:0.3rem;padding-bottom:0;
+}
+
+/* ── Mobile ── */
+@media(max-width:700px){
+  .step{justify-content:flex-start!important;padding-left:1.2rem!important;min-height:110vh!important}
+  .step__content{max-width:92vw;padding:1.2rem 1.4rem}
+  .step__content h2{font-size:1.3rem}
+  .step__content p{font-size:0.84rem}
+  .chart-headline{padding:0.8rem 1rem 0}
+  .chart-headline h1{font-size:0.9rem;white-space:normal}
+  .chart-headline .standfirst{font-size:0.7rem}
+  .chart-legend{bottom:8px;right:8px;font-size:10px;gap:12px}
+  .speech-bubble{max-width:85vw;padding:1.2rem 1.4rem}
+  .speech-bubble h2{font-size:1.25rem}
+  .speech-bubble p{font-size:0.82rem}
+  .speech-bubble-right::after{
+    right:auto;bottom:-14px;left:50%;margin-left:-8px;
+    border-top:14px solid #fff;border-bottom:none;
+    border-left:10px solid transparent;border-right:10px solid transparent;
+  }
+  .speech-bubble-right::before{
+    right:auto;bottom:-16px;left:50%;margin-left:-9px;
+    border-top:16px solid #e2e8f0;border-bottom:none;
+    border-left:11px solid transparent;border-right:11px solid transparent;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-hint" id="scroll-hint">
+  <svg width="48" height="48" viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg>
+</div>
+
+<div class="scrolly">
+  <div class="scrolly__graphic" id="chart-wrap">
+    <div class="chart-headline" id="headline">
+      <h1>Major Large Language Models (LLMs)</h1>
+      <p class="standfirst">Ranked by capabilities, sized by parameters used for training</p>
+    </div>
+    <div class="chart-legend" id="legend"></div>
+  </div>
+
+  <div class="scrolly__steps">
+    <!-- STEP 0: GPT-2 intro (empty — bubble is drawn in SVG with the character) -->
+    <div class="step" data-step="0" style="min-height:100vh"></div>
+
+    <!-- Spacer: let the character finish its journey -->
+    <div class="step" data-step="0b" style="min-height:120vh"></div>
+
+    <!-- STEP 1: 260 models appeared -->
+    <div class="step" data-step="1">
+      <div class="step__content">
+        <p>Within seven years, hundreds of AI models followed. These are the 258 that published standardised test scores as of April 2026 &ndash; each one vying to be smarter than the&nbsp;last.</p>
+        <p class="src" style="line-height:2.2">
+          <svg width="8" height="8" style="vertical-align:middle"><circle cx="4" cy="4" r="3" fill="none" stroke="#b0b8c4" stroke-width="1.2"/></svg> small&emsp;
+          <svg width="18" height="18" style="vertical-align:middle"><circle cx="9" cy="9" r="8" fill="none" stroke="#b0b8c4" stroke-width="1.2"/></svg> big&emsp;
+          <svg width="30" height="30" style="vertical-align:middle"><circle cx="15" cy="15" r="14" fill="none" stroke="#b0b8c4" stroke-width="1.2"/></svg> giant
+        </p>
+        <p class="src" style="line-height:2.2">
+          <svg width="14" height="14" style="vertical-align:middle" viewBox="0 0 14 14"><rect x="3" y="3" width="8" height="8" fill="#b0b8c4" transform="rotate(45 7 7)"/></svg> gave AI away&emsp;
+          <svg width="14" height="14" style="vertical-align:middle"><circle cx="7" cy="7" r="6" fill="#b0b8c4"/></svg> locked it&nbsp;up
+        </p>
+      </div>
+    </div>
+
+    <!-- STEP 2: Two camps -->
+    <div class="step" data-step="2">
+      <div class="step__content">
+        <h2>Different strategies developed.</h2>
+        <p><span style="color:#8da0cb;font-weight:700">Some tended to release their models for&nbsp;free.</span><br><span style="color:#e78ac3;font-weight:700">Others stuck to locking theirs behind a&nbsp;paywall.</span></p>
+      </div>
+    </div>
+
+    <!-- STEP 3: OpenAI going open -->
+    <div class="step" data-step="3">
+      <div class="step__content">
+        <h2>Then the lines started&nbsp;crossing.</h2>
+        <p>After six years of keeping every model under lock and key, <span style="color:#fc8d62;font-weight:700">OpenAI</span> quietly released two of them as open-weight in August&nbsp;2025.</p>
+      </div>
+    </div>
+
+    <!-- STEP 4: Alibaba going closed -->
+    <div class="step" data-step="4">
+      <div class="step__content">
+        <h2><span style="color:#66c2a5">Alibaba</span> went the opposite.</h2>
+        <p>In April 2026, it locked its newest flagship &ndash; Qwen3.6-Plus &ndash; behind a&nbsp;paywall.</p>
+      </div>
+    </div>
+
+    <!-- Spacer: let Alibaba card scroll away before article -->
+    <div class="step" data-step="end-spacer" style="min-height:80vh"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!--  ARTICLE BODY                           -->
+<!-- ════════════════════════════════════════ -->
+<article class="article">
+  <div class="article__content">
+
+    <div class="article__header">
+      <p class="kicker">Analysis</p>
+      <h1>AI race's battle lines are being redrawn</h1>
+      <p class="standfirst">Behind OpenAI&rsquo;s brief pivot to openness and Alibaba&rsquo;s retreat behind a paywall lies a deeper question: can giving AI away for free survive as a business&nbsp;strategy?</p>
+      <p style="font-family:'Inter',system-ui,sans-serif;font-size:0.8rem;color:#94a3b8;margin-top:1rem">April 5, 2026</p>
+    </div>
+
+    <p class="drop-cap">On the surface, Alibaba&rsquo;s numbers look strong. Its cloud revenue surged 36 per cent year-on-year to 43.3 billion yuan (about US$6.3 billion), and AI-related product revenue has grown at triple-digit rates for ten consecutive&nbsp;quarters.</p>
+
+    <p>But the open-source model that powered that growth was becoming a problem. Building frontier models costs more every year &ndash; <a target="_blank" href="https://www.cbinsights.com/research/report/future-of-foundation-models-open-source-closed-source/">frontier training costs are growing 2.4 times annually</a>, according to CB Insights &ndash; and giving the results away makes it hard to recoup the investment. Since 2020, open-source AI has attracted US$14.9 billion in investment, compared with US$37.5 billion for closed-source&nbsp;models.</p>
+
+    <p>On March 3, Qwen&rsquo;s technical lead <a target="_blank" href="https://techcrunch.com/2026/03/03/alibabas-qwen-tech-lead-steps-down-after-major-ai-push/">Lin Junyang resigned</a>. Yu Bowen, head of post-training, left the same day. A colleague described it as &ldquo;the end of an era.&rdquo; <a target="_blank" href="https://www.bloomberg.com/news/articles/2026-03-04/alibaba-qwen-head-who-warned-of-openai-gap-steps-down">Bloomberg reported</a> that Lin had privately warned colleagues Alibaba was falling behind OpenAI. His replacement, Zhou Hao, came from Google DeepMind&rsquo;s Gemini&nbsp;team.</p>
+
+    <p>Within a month, Alibaba released three proprietary models in three days. Cloud storage prices went up by as much as 34 per cent. The company is now chasing a US$100 billion cloud revenue target over five&nbsp;years.</p>
+
+    <p>OpenAI, meanwhile, briefly cracked open a window. The catalyst? DeepSeek.</p>
+
+    <p>In January 2025, the Hangzhou-based lab released R1, a reasoning model that matched or exceeded OpenAI's o1 on major benchmarks. <a target="_blank" href="https://www.cnn.com/2025/09/19/business/deepseek-ai-training-cost-china-intl">CNN later reported</a> the actual training cost was just US$294,000, a fraction of the hundreds of millions Western labs were spending. Its API was 95 per cent cheaper than OpenAI's equivalent. The market response was swift: Nvidia lost hundreds of billions in market capitalisation in a single session.</p>
+
+    <p>Six months later, OpenAI released gpt-oss-120b and gpt-oss-20b under the Apache 2.0 licence &ndash; its first open-weight models since GPT-2 in 2019 &ndash; while its CEO Sam Altman <a target="_blank" href="https://fortune.com/2025/02/01/sam-altman-openai-open-source-strategy-after-deepseek-shock/">admitted</a> the company had been &ldquo;on the wrong side of history.&rdquo; Independent evaluations found gpt-oss-120b <a target="_blank" href="https://simonwillison.net/2025/Aug/5/gpt-oss/">trailed DeepSeek R1 and Alibaba&rsquo;s Qwen3</a> on intelligence benchmarks, the very models that had forced OpenAI&rsquo;s&nbsp;hand.</p>
+
+    <!-- ai2html chart: OpenAI trails -->
+    <div id="g-openai_trails-box" class="ai2html" style="margin:2em 0">
+      <div id="g-openai_trails-full" class="g-artboard" style="width:700px;height:425px;" data-aspect-ratio="1.647" data-min-width="500">
+        <div style=""></div>
+        <img class="g-aiImg" alt="" src="charts/openai_trails-full.png"/>
+        <div class="g-aiAbs g-aiPointText" style="top:8.2759%;margin-top:-33.2px;left:-0.0319%;width:447px;"><p class="g-pstyle0">OpenAI&rsquo;s open-weight model trails </p><p class="g-pstyle0">the rivals that forced its hand</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:19.7316%;margin-top:-10.9px;left:0.0008%;width:550px;"><p class="g-pstyle1">MMLU scores of three competing open-weight models, sized by parameters</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:27.0995%;margin-top:-9.2px;left:1.1939%;width:36px;"><p class="g-pstyle2">92</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:37.6101%;margin-top:-7.8px;left:29.9563%;width:95px;"><p class="g-pstyle3">DeepSeek-R1</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:40.7001%;margin-top:-8px;left:29.9563%;width:90px;"><p class="g-pstyle4">685B params</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:45.3748%;margin-top:-7.8px;left:72.0464%;width:94px;"><p class="g-pstyle5">gpt-oss-120b</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:46.256%;margin-top:-8.6px;left:5.5098%;width:136px;"><p class="g-pstyle6">89.8 = human expert</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:47.3348%;margin-top:-9.2px;left:1.1939%;width:36px;"><p class="g-pstyle2">90</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:48.7001%;margin-top:-8px;left:72.0464%;width:139px;"><p class="g-pstyle7">120B params (OpenAI)</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:71.1077%;margin-top:-51.2px;left:70.5417%;width:194px;"><p class="g-pstyle8">The OpenAI model leads </p><p class="g-pstyle8">Alibaba&rsquo;s on MMLU but </p><p class="g-pstyle9">trails it on the Artificial </p><p class="g-pstyle9">Analysis composite index<span class="g-cstyle0">, </span></p><p class="g-pstyle8">which weights reasoning and </p><p class="g-pstyle8">coding more heavily.</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:67.5701%;margin-top:-9.2px;left:1.1939%;width:36px;"><p class="g-pstyle2">88</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:67.4924%;margin-top:-7.8px;left:46.9633%;width:93px;"><p class="g-pstyle10">Qwen3-235B</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:70.5825%;margin-top:-8px;left:46.9633%;width:140px;"><p class="g-pstyle11">235B params (Alibaba)</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:87.8054%;margin-top:-9.2px;left:1.1939%;width:36px;"><p class="g-pstyle2">86</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.923%;margin-top:-9.2px;left:21.1861%;width:68px;"><p class="g-pstyle2">2025-01</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.923%;margin-top:-9.2px;left:45.8579%;width:68px;"><p class="g-pstyle2">2025-05</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.923%;margin-top:-9.2px;left:71.1466%;width:68px;"><p class="g-pstyle2">2025-09</p></div>
+        <div class="g-aiAbs" style="top:93.6471%;right:1.6181%;width:95.2857%;"><p class="g-pstyle12">Source: LifeArchitect.ai</p></div>
+      </div>
+      <div id="g-openai_trails-mobile" class="g-artboard" style="max-width:375px;max-height:561px" data-aspect-ratio="0.669" data-min-width="0" data-max-width="499">
+        <div style="padding:0 0 149.5467% 0;"></div>
+        <img class="g-aiImg" alt="" src="charts/openai_trails-mobile.png"/>
+        <div class="g-aiAbs g-aiPointText" style="top:9.2675%;margin-top:-46px;left:2.5948%;width:296px;"><p class="g-pstyle0">OpenAI&rsquo;s open-weight </p><p class="g-pstyle0">model trails the rivals </p><p class="g-pstyle0">that forced its hand</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:22.0862%;margin-top:-19.9px;left:2.656%;width:349px;"><p class="g-pstyle1">MMLU scores of three competing open-weight </p><p class="g-pstyle1">models, sized by parameters</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:31.4476%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">92</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:40.0068%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">91</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:40.6004%;margin-top:-8.7px;left:35.8375%;width:99px;"><p class="g-pstyle3">DeepSeek-R1</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:43.217%;margin-top:-7.4px;left:35.8375%;width:84px;"><p class="g-pstyle4">685B params</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:47.3764%;margin-top:-8.7px;left:69.3573%;width:97px;"><p class="g-pstyle5">gpt-oss-120b</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:48.2247%;margin-top:-8.4px;left:10.3466%;width:141px;"><p class="g-pstyle6">89.8 = human expert</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:48.7444%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">90</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:50.1713%;margin-top:-7.4px;left:69.3573%;width:129px;"><p class="g-pstyle7">120B params (OpenAI)</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:57.3036%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">89</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:66.0411%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">88</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:66.278%;margin-top:-8.7px;left:48.8547%;width:96px;"><p class="g-pstyle8">Qwen3-235B</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:68.8946%;margin-top:-7.4px;left:48.8547%;width:130px;"><p class="g-pstyle9">235B params (Alibaba)</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:74.6003%;margin-top:-6.4px;left:2.2294%;width:32px;"><p class="g-pstyle2">87</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:81.3849%;margin-top:-36.4px;left:50.9112%;width:170px;"><p class="g-pstyle10">OpenAI leads Alibaba here </p><p class="g-pstyle11"><span class="g-cstyle0">but </span>trails it on the Artificial </p><p class="g-pstyle11">Analysis composite index<span class="g-cstyle0">, </span></p><p class="g-pstyle10">which weights reasoning and </p><p class="g-pstyle10">coding more heavily.</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:83.5161%;margin-top:-6.4px;left:2.307%;width:32px;"><p class="g-pstyle2">86</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.1452%;margin-top:-6.4px;left:23.6878%;width:54px;"><p class="g-pstyle2">2025-01</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.1452%;margin-top:-6.4px;left:44.4052%;width:54px;"><p class="g-pstyle2">2025-05</p></div>
+        <div class="g-aiAbs g-aiPointText" style="top:93.1452%;margin-top:-6.4px;left:65.6404%;width:54px;"><p class="g-pstyle2">2025-09</p></div>
+        <div class="g-aiAbs" style="top:94.1512%;left:67.6161%;width:29.8667%;"><p class="g-pstyle12">Source: LifeArchitect.ai</p></div>
+      </div>
+    </div>
+
+    <p>Not everyone chose to build the biggest model. DeepSeek has released just 20 models, yet nine of them &ndash; 45 per cent &ndash; achieved state-of-the-art results at the time of release. That hit rate is rivalled only by OpenAI, where 21 of 33 models set new benchmarks, and Anthropic, where nine of 14 did. Both spend orders of magnitude&nbsp;more.</p>
+
+    <p>Moonshot AI, also Chinese, set records with four of its nine models. By contrast, Google needed 90 models to produce 19 breakthroughs, and Microsoft achieved just one from&nbsp;42.</p>
+
+    <!-- ai2html chart: China's share -->
+    <div id="g-china-share-box" class="ai2html" style="margin:2em 0">
+      <div id="g-china-share-full" class="g-artboard" style="width:700px; height:390px;" data-aspect-ratio="1.795" data-min-width="500">
+        <div style=""></div>
+        <img id="g-china-share-full-img" class="g-china-share-full-img g-aiImg" alt="" src="charts/china-share-full.png"/>
+        <div id="g-ai0-1" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:8.7108%;margin-top:-17px;left:0.115%;width:326px;"><p class="g-pstyle0">From zero to nearly 1 in 3</p></div>
+        <div id="g-ai0-2" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:16.233%;margin-top:-10.3px;left:0.3436%;width:333px;"><p class="g-pstyle1"><span class="g-cstyle0">Chinese labs&rsquo; </span>share of major AI models, by year</p></div>
+        <div id="g-ai0-3" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:21.432%;margin-top:-15.6px;left:69.2677%;width:67px;"><p class="g-pstyle2">15%</p></div>
+        <div id="g-ai0-4" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:25.2782%;margin-top:-15.6px;left:78.9565%;width:67px;"><p class="g-pstyle2">28%</p></div>
+        <div id="g-ai0-5" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:45.0218%;margin-top:-15.6px;left:60.185%;width:54px;"><p class="g-pstyle2">7%</p></div>
+        <div id="g-ai0-6" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:64.7654%;margin-top:-15.6px;left:50.3946%;width:54px;"><p class="g-pstyle2">3%</p></div>
+        <div id="g-ai0-7" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:65.0218%;margin-top:-15.6px;left:88.7881%;width:67px;"><p class="g-pstyle2">32%</p></div>
+        <div id="g-ai0-8" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:73.2269%;margin-top:-15.6px;left:40.3789%;width:54px;"><p class="g-pstyle2">8%</p></div>
+        <div id="g-ai0-9" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:85.753%;margin-top:-9.4px;left:11.0578%;width:49px;"><p class="g-pstyle3">2018</p></div>
+        <div id="g-ai0-10" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:85.753%;margin-top:-9.4px;left:30.7211%;width:49px;"><p class="g-pstyle3">2020</p></div>
+        <div id="g-ai0-11" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:85.753%;margin-top:-9.4px;left:50.3843%;width:49px;"><p class="g-pstyle3">2022</p></div>
+        <div id="g-ai0-12" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:85.753%;margin-top:-9.4px;left:70.0476%;width:49px;"><p class="g-pstyle3">2024</p></div>
+        <div id="g-ai0-13" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:85.753%;margin-top:-9.4px;left:89.7109%;width:49px;"><p class="g-pstyle3">2026</p></div>
+        <div id="g-ai0-14" class="g-ai2html-settings g-aiAbs" style="top:88.4615%;left:-0.0059%;width:95.2857%;display:flex;justify-content:space-between;"><p class="g-pstyle4" style="font-size:11px;color:#94a3b8">Labs classified as Chinese based on company headquarters.</p><p class="g-pstyle4" style="font-size:11px;color:#94a3b8">Source: LifeArchitect.ai</p></div>
+      </div>
+      <div id="g-china-share-mobile" class="g-artboard" style="max-width: 375px;max-height: 428px" data-aspect-ratio="0.877" data-min-width="0" data-max-width="699">
+        <div style="padding: 0 0 114.08% 0;"></div>
+        <img id="g-china-share-mobile-img" class="g-china-share-mobile-img g-aiImg" alt="" src="charts/china-share-mobile.png"/>
+        <div id="g-ai1-1" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:7.0061%;margin-top:-17px;left:3.3914%;width:326px;"><p class="g-pstyle0">From zero to nearly 1 in 3</p></div>
+        <div id="g-ai1-2" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:13.6299%;margin-top:-10.3px;left:3.6208%;width:333px;"><p class="g-pstyle1"><span class="g-cstyle0">Chinese labs&rsquo; </span>share of major AI models, by year</p></div>
+        <div id="g-ai1-3" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:20.9073%;margin-top:-10.4px;left:69.8792%;width:51px;"><p class="g-pstyle2">15%</p></div>
+        <div id="g-ai1-4" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:25.3486%;margin-top:-10.4px;left:79.7992%;width:51px;"><p class="g-pstyle2">28%</p></div>
+        <div id="g-ai1-5" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:47.0878%;margin-top:-10.4px;left:61.4505%;width:43px;"><p class="g-pstyle2">7%</p></div>
+        <div id="g-ai1-6" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:68.5931%;margin-top:-10.4px;left:52.2279%;width:43px;"><p class="g-pstyle2">3%</p></div>
+        <div id="g-ai1-7" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:68.5931%;margin-top:-10.4px;left:89.0536%;width:51px;"><p class="g-pstyle2">32%</p></div>
+        <div id="g-ai1-8" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:77.4758%;margin-top:-10.4px;left:42.576%;width:43px;"><p class="g-pstyle2">8%</p></div>
+        <div id="g-ai1-9" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:89.0406%;margin-top:-8.9px;left:13.1385%;width:48px;"><p class="g-pstyle3">2018</p></div>
+        <div id="g-ai1-10" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:89.0406%;margin-top:-8.9px;left:32.1633%;width:48px;"><p class="g-pstyle3">2020</p></div>
+        <div id="g-ai1-11" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:89.0406%;margin-top:-8.9px;left:51.9615%;width:48px;"><p class="g-pstyle3">2022</p></div>
+        <div id="g-ai1-12" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:89.0406%;margin-top:-8.9px;left:70.7281%;width:48px;"><p class="g-pstyle3">2024</p></div>
+        <div id="g-ai1-13" class="g-ai2html-settings g-aiAbs g-aiPointText" style="top:89.0406%;margin-top:-8.9px;left:89.7523%;width:48px;"><p class="g-pstyle3">2026</p></div>
+        <div id="g-ai1-14" class="g-ai2html-settings g-aiAbs" style="top:90.9303%;left:3.395%;width:93%;display:flex;justify-content:space-between;"><p class="g-pstyle4" style="font-size:9px;color:#94a3b8">Labs classified as Chinese based on company headquarters.</p><p class="g-pstyle4" style="font-size:9px;color:#94a3b8">Source: LifeArchitect.ai</p></div>
+      </div>
+    </div>
+
+    <p>In 2020, not a single model in this dataset came from a Chinese lab. By 2025, Chinese companies accounted for 28 per cent of all new models. In the first months of 2026, it is 32 per&nbsp;cent.</p>
+
+    <p>The acceleration is directly traceable to DeepSeek&rsquo;s R1. In the year after its release, Chinese labs produced 49 reasoning models, up from five the year before. Chinese open-source models grew from 1.2 per cent to nearly 30 per cent of global usage in 2025, <a target="_blank" href="https://www.capmad.com/technology-en/deepseek-r1-one-year-later-china-dominates-open-source-ai-in-2026/">according to one analysis</a>.</p>
+
+    <p>Now, DeepSeek is preparing to release V4, expected in mid-to-late April. <a target="_blank" href="https://the-decoder.com/deepseek-v4-will-reportedly-run-entirely-on-huawei-chips-in-a-major-win-for-chinas-ai-independence-push/">Reports indicate</a> it will run entirely on Huawei&rsquo;s Ascend chips, bypassing Nvidia&rsquo;s CUDA ecosystem entirely. Alibaba, ByteDance and Tencent have reportedly ordered hundreds of thousands of Huawei&rsquo;s new Ascend 950PR units, pushing chip prices up 20 per&nbsp;cent.</p>
+
+    <p>The question at the centre of this race is not which model is smartest. It is whether giving AI away for free &ndash; the strategy that built Alibaba&rsquo;s 300 million downloads and Meta&rsquo;s 1.2 billion &ndash; can survive as a business model when each new generation costs more to&nbsp;build.</p>
+
+    <p>Alibaba&rsquo;s answer, this week, was no. OpenAI&rsquo;s answer, last year, was yes. The next chapter will be written by whoever turns out to be&nbsp;right.</p>
+  </div>
+
+  <div class="article__footer">
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:2em 0">
+    <p style="font-size:0.9rem;color:#94a3b8;line-height:1.7">
+      <strong>About this project:</strong> The opening chart is adapted from <a target="_blank" href="https://informationisbeautiful.net/visualizations/the-rise-of-generative-ai-large-language-models-llms-like-chatgpt/" style="color:#64748b">The Rise of Generative AI</a> by David McCandless, Tom Evans and Paul Barton at Information is Beautiful. This piece was developed as a class exercise in remixing a data-dense visualisation into a narrative story.<br><br>
+      <strong>Data:</strong> <a target="_blank" href="https://docs.google.com/spreadsheets/d/14KzlcYOK6Xj-_6N19T2Iqro4sGaAUOLD2FovSXyefUQ/edit?gid=426115144#gid=426115144" style="color:#64748b">LifeArchitect.ai Models Table</a>
+    </p>
+  </div>
+</article>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// ════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════
+const OPEN_COLOR   = '#8da0cb';   // periwinkle blue
+const CLOSED_COLOR = '#e78ac3';   // soft pink
+const GREY         = '#b0b8c4';
+const OAI_ACCENT   = '#fc8d62';   // warm orange
+const ALI_ACCENT   = '#66c2a5';   // teal green
+const FADE         = '#e2e6ea';
+
+// ════════════════════════════════════════
+//  SETUP
+// ════════════════════════════════════════
+const wrap = document.getElementById('chart-wrap');
+let W, H, iw, ih, margin, svg, g, x, y, r, dataLayer, axisLayer, annoLayer;
+
+function getMargin() {
+  const mobile = window.innerWidth < 700;
+  return { top: mobile ? 100 : 120, right: mobile ? 16 : 40, bottom: mobile ? 36 : 44, left: mobile ? 58 : 76 };
+}
+
+function setupChart(data) {
+  W = wrap.clientWidth;
+  H = wrap.clientHeight;
+  margin = getMargin();
+  iw = W - margin.left - margin.right;
+  ih = H - margin.top - margin.bottom;
+
+  d3.select('#chart-wrap svg').remove();
+  svg = d3.select('#chart-wrap').append('svg').attr('width', W).attr('height', H);
+
+  // Clip
+  svg.append('defs').append('clipPath').attr('id', 'clip')
+    .append('rect').attr('x', -10).attr('y', -10).attr('width', iw + 20).attr('height', ih + 20);
+
+  const root = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  axisLayer = root.append('g');
+  dataLayer = root.append('g').attr('clip-path', 'url(#clip)');
+  annoLayer = root.append('g');
+
+  // Scales
+  x = d3.scaleTime().domain([new Date('2019-01-01'), new Date('2026-08-01')]).range([0, iw]);
+  y = d3.scaleLinear().domain([18, 98]).range([ih, 0]);
+  r = d3.scaleSqrt().domain([0, 3500]).range([3.5, W < 700 ? 34 : 52]);
+
+  // Axes
+  const mobile = W < 700;
+  axisLayer.append('g')
+    .call(d3.axisTop(x).ticks(mobile ? 4 : 7).tickFormat(d3.timeFormat("%Y")).tickSize(0).tickPadding(8))
+    .call(g => g.select('.domain').remove())
+    .selectAll('text').attr('font-size', mobile ? '10px' : '12px').attr('fill', '#94a3b8');
+
+  axisLayer.append('g')
+    .call(d3.axisLeft(y).tickValues([20, 40, 60, 80]).tickSize(0).tickPadding(6))
+    .call(g => g.select('.domain').remove())
+    .selectAll('text').attr('font-size', mobile ? '10px' : '11px').attr('fill', '#94a3b8');
+
+  // Y label
+  axisLayer.append('text').attr('transform', 'rotate(-90)').attr('y', -44).attr('x', -ih * 0.15)
+    .attr('text-anchor', 'middle').attr('font-size', mobile ? '13px' : '15px').attr('font-weight', '600').attr('fill', '#94a3b8').text('Smarter \u2192');
+  axisLayer.append('text').attr('transform', 'rotate(-90)').attr('y', -44).attr('x', -ih * 0.85)
+    .attr('text-anchor', 'middle').attr('font-size', mobile ? '13px' : '15px').attr('font-weight', '600').attr('fill', '#94a3b8').text('\u2190 Less smart');
+  // MMLU score label — same style, centered between Smarter and Less smart
+  axisLayer.append('text').attr('transform', 'rotate(-90)').attr('y', -44).attr('x', -ih / 2)
+    .attr('text-anchor', 'middle').attr('font-size', mobile ? '11px' : '12px')
+    .attr('font-weight', '400').attr('fill', '#94a3b8')
+    .text('MMLU score');
+
+  // Reference lines
+  [{ v: 89.8, label: 'As smart as a human expert', dash: '6,4', color: '#d1d5db' },
+   { v: 70, label: 'Good enough to be useful', dash: '3,4', color: '#e5e7eb' }].forEach(ref => {
+    axisLayer.append('line').attr('x1', 0).attr('x2', iw)
+      .attr('y1', y(ref.v)).attr('y2', y(ref.v))
+      .attr('stroke', ref.color).attr('stroke-dasharray', ref.dash).attr('stroke-width', 1);
+    axisLayer.append('text').attr('x', 4).attr('y', y(ref.v) - 5)
+      .text(ref.label).attr('font-size', mobile ? '11px' : '13px').attr('fill', '#b0b8c4');
+  });
+
+  // Grid
+  [30, 50].forEach(v => {
+    axisLayer.append('line').attr('x1', 0).attr('x2', iw)
+      .attr('y1', y(v)).attr('y2', y(v))
+      .attr('stroke', '#f1f5f9').attr('stroke-width', 0.6);
+  });
+}
+
+// ════════════════════════════════════════
+//  JITTER
+// ════════════════════════════════════════
+function jitter(s, range) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h &= h; }
+  return ((Math.abs(h) % 1000) / 1000 - 0.5) * range;
+}
+
+// ════════════════════════════════════════
+//  TOOLTIP
+// ════════════════════════════════════════
+const tip = d3.select('body').append('div')
+  .style('position', 'absolute').style('display', 'none')
+  .style('background', 'rgba(15,23,42,0.94)').style('color', '#e2e8f0')
+  .style('padding', '8px 12px').style('border-radius', '5px')
+  .style('font-size', '12px').style('pointer-events', 'none')
+  .style('z-index', '100').style('max-width', '250px').style('line-height', '1.5');
+
+// ════════════════════════════════════════
+//  RENDER DOTS
+// ════════════════════════════════════════
+let dots;
+function renderDots(data) {
+  dots = dataLayer.selectAll('path').data(data, d => d.model).join(
+    enter => enter.append('path')
+      .attr('transform', d => {
+        const tx = x(new Date(d.date)) + jitter(d.model, 5);
+        const ty = y(d.mmlu) + jitter(d.model + 'y', 4);
+        return d.ow ? `translate(${tx},${ty}) rotate(45)` : `translate(${tx},${ty})`;
+      })
+      .attr('d', d => {
+        const sz = r(d.params);
+        return d.ow
+          ? d3.symbol().type(d3.symbolSquare).size(sz * sz * 0.7)()    // rotated square
+          : d3.symbol().type(d3.symbolCircle).size(sz * sz * 0.7)();   // circle
+      })
+      .attr('fill', d => d.estimated === true ? 'none' : GREY)
+      .attr('opacity', 0)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.5)
+      .style('cursor', 'pointer')
+      .on('mouseover', function(ev, d) {
+        d3.select(this).attr('stroke', '#1e293b').attr('stroke-width', 1.5);
+        tip.style('display', 'block').html(`<strong>${d.model}</strong><br>${d.lab}<br>MMLU ${d.mmlu} · ${d.params}B params<br>${d.date.slice(0,7)}${d.ow ? ' · open-weight' : ''}${d.estimated ? ' · estimated' : ''}`);
+      })
+      .on('mousemove', ev => tip.style('left', (ev.pageX + 12) + 'px').style('top', (ev.pageY - 8) + 'px'))
+      .on('mouseout', function() {
+        d3.select(this).attr('stroke', '#fff').attr('stroke-width', 1.5);
+        tip.style('display', 'none');
+      }),
+    update => update,
+    exit => exit.remove()
+  );
+}
+
+// ════════════════════════════════════════
+//  STEP TRANSITIONS
+// ════════════════════════════════════════
+let currentStep = -1;
+
+function drawGPT2Character(layer, cx, cy, size) {
+  const g = layer.append('g').attr('class', 'gpt2-character')
+    .attr('transform', `translate(${cx},${cy})`);
+
+  // Diamond body
+  const s = size;
+  g.append('polygon')
+    .attr('points', `0,${-s} ${s},0 0,${s} ${-s},0`)
+    .attr('fill', OAI_ACCENT).attr('opacity', 0.4)
+    .attr('stroke', OAI_ACCENT).attr('stroke-width', 2);
+
+  // Eyes — two small dots
+  const eyeY = -s * 0.18, eyeSpread = s * 0.22, eyeR = s * 0.06;
+  g.append('circle').attr('cx', -eyeSpread).attr('cy', eyeY).attr('r', eyeR).attr('fill', '#1e293b');
+  g.append('circle').attr('cx', eyeSpread).attr('cy', eyeY).attr('r', eyeR).attr('fill', '#1e293b');
+  // Eye shine
+  g.append('circle').attr('cx', -eyeSpread + eyeR * 0.4).attr('cy', eyeY - eyeR * 0.3).attr('r', eyeR * 0.35).attr('fill', '#fff');
+  g.append('circle').attr('cx', eyeSpread + eyeR * 0.4).attr('cy', eyeY - eyeR * 0.3).attr('r', eyeR * 0.35).attr('fill', '#fff');
+
+  // Mouth — small smile arc
+  const mouthY = s * 0.12, mouthW = s * 0.2;
+  g.append('path')
+    .attr('d', `M${-mouthW},${mouthY} Q0,${mouthY + s * 0.12} ${mouthW},${mouthY}`)
+    .attr('fill', 'none').attr('stroke', '#1e293b').attr('stroke-width', 1.8)
+    .attr('stroke-linecap', 'round');
+
+  // Legs (drawn before bubble)
+  g.append('path')
+    .attr('d', `M${-s * 0.5},${s * 0.5} L${-s * 0.45},${s * 1.35}`)
+    .attr('fill', 'none').attr('stroke', '#1e293b').attr('stroke-width', 1.8)
+    .attr('stroke-linecap', 'round');
+  g.append('circle').attr('cx', -s * 0.45).attr('cy', s * 1.35).attr('r', s * 0.04).attr('fill', '#1e293b');
+  g.append('path')
+    .attr('d', `M${s * 0.5},${s * 0.5} L${s * 0.45},${s * 1.35}`)
+    .attr('fill', 'none').attr('stroke', '#1e293b').attr('stroke-width', 1.8)
+    .attr('stroke-linecap', 'round');
+  g.append('circle').attr('cx', s * 0.45).attr('cy', s * 1.35).attr('r', s * 0.04).attr('fill', '#1e293b');
+
+  // Speech bubble (middle layer) — left on desktop, above on mobile
+  const isMobile = window.innerWidth < 700;
+  const bw = isMobile ? Math.min(280, window.innerWidth - 60) : 320;
+  const bh = isMobile ? 300 : 320;
+  const fo = g.append('foreignObject')
+    .attr('class', 'gpt2-bubble-fo')
+    .attr('x', isMobile ? -bw / 2 : -s * 1.3 - bw)
+    .attr('y', isMobile ? -s * 1.3 - bh : -bh + s * 0.1)
+    .attr('width', bw)
+    .attr('height', bh);
+
+  fo.attr('style', 'overflow:visible');
+
+  fo.append('xhtml:div')
+    .attr('class', 'speech-bubble speech-bubble-right')
+    .html(`
+      <h2>Hi. I\u2019m GPT-2.</h2>
+      <p>Back in February 2019, it was just me. OpenAI built me and gave me away \u2013 free for anyone to download, take apart and learn\u00a0from.</p>
+      <p>I wasn\u2019t very smart. But I was <em>open</em>. That used to mean something in this\u00a0industry.</p>
+      <p class="kicker">Then things got\u00a0complicated.</p>
+    `);
+
+  // Arms drawn LAST so they render on top of the speech bubble
+  const leftArm = g.append('g').attr('class', 'wave-left')
+    .attr('transform-origin', `${-s * 0.7}px ${-s * 0.05}px`);
+  leftArm.append('path')
+    .attr('d', `M${-s * 0.7},${-s * 0.05} Q${-s * 1.05},${-s * 0.45} ${-s * 0.9},${-s * 0.7}`)
+    .attr('fill', 'none').attr('stroke', '#1e293b').attr('stroke-width', 1.8)
+    .attr('stroke-linecap', 'round');
+  leftArm.append('circle').attr('cx', -s * 0.9).attr('cy', -s * 0.7).attr('r', s * 0.04).attr('fill', '#1e293b');
+
+  const rightArm = g.append('g').attr('class', 'wave-right')
+    .attr('transform-origin', `${s * 0.7}px ${-s * 0.05}px`);
+  rightArm.append('path')
+    .attr('d', `M${s * 0.7},${-s * 0.05} Q${s * 1.0},${s * 0.1} ${s * 0.95},${s * 0.3}`)
+    .attr('fill', 'none').attr('stroke', '#1e293b').attr('stroke-width', 1.8)
+    .attr('stroke-linecap', 'round');
+  rightArm.append('circle').attr('cx', s * 0.95).attr('cy', s * 0.3).attr('r', s * 0.04).attr('fill', '#1e293b');
+
+  return g;
+}
+
+function goToStep(step, data) {
+  if (step === currentStep) return;
+  currentStep = step;
+  // Clear annotations but keep the GPT-2 character
+  annoLayer.selectAll('*:not(.gpt2-character)').remove();
+  const t = d3.transition().duration(700).ease(d3.easeCubicOut);
+  const mobile = W < 700;
+  const legendEl = document.getElementById('legend');
+
+  if (step === 0) {
+    // ── GPT-2 solo: full reset everything ──
+    legendEl.innerHTML = '';
+    axisLayer.attr('opacity', 0);
+    document.getElementById('headline').style.opacity = 0;
+    document.getElementById('scroll-hint').style.opacity = 0.6;
+    // Force reset ALL dot properties — fill, opacity, stroke
+    dots.interrupt()
+      .attr('fill', GREY).attr('opacity', 0)
+      .attr('stroke', '#fff').attr('stroke-width', 1.5);
+    // Always recreate the character fresh
+    annoLayer.selectAll('.gpt2-character').remove();
+    const charSize = mobile ? 55 : 90;
+    const charX = mobile ? (W / 2 - margin.left) : iw / 2;
+    const charY = mobile ? ih * 0.62 : ih / 2 - 20;
+    drawGPT2Character(annoLayer, charX, charY, charSize);
+  }
+
+  else if (step === 1) {
+    // ── Chart fully revealed, character lands and disappears ──
+    axisLayer.attr('opacity', 1);
+    legendEl.innerHTML = '';
+
+    // Keep the character at dot-size at its chart position
+    const gpt2 = data.find(d => d.model === 'GPT-2');
+    if (gpt2) {
+      const tx = x(new Date(gpt2.date)) + jitter(gpt2.model, 5);
+      const ty = y(gpt2.mmlu) + jitter(gpt2.model + 'y', 4);
+      const dotScale = r(1.5) / (mobile ? 60 : 90);
+      annoLayer.selectAll('.gpt2-character')
+        .attr('transform', `translate(${tx},${ty}) scale(${dotScale})`)
+        .attr('opacity', 1);
+    }
+
+    dots.attr('fill', GREY).attr('opacity', 0.6);
+    dots.style('pointer-events', 'auto').style('cursor', 'pointer');
+  }
+
+  else if (step === 2) {
+    // ── Open vs Closed ──
+    legendEl.innerHTML = `
+      <span><svg width="14" height="14" viewBox="0 0 14 14"><rect x="3" y="3" width="8" height="8" fill="${OPEN_COLOR}" transform="rotate(45 7 7)"/></svg> gave AI away</span>
+      <span><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="${CLOSED_COLOR}"/></svg> locked it up</span>`;
+
+    dots.transition(t)
+      .attr('fill', d => d.ow ? OPEN_COLOR : CLOSED_COLOR)
+      .attr('opacity', 0.75);
+  }
+
+  else if (step === 3) {
+    // ── OpenAI focus ──
+    legendEl.innerHTML = `<span style="color:${OAI_ACCENT};font-weight:800;font-size:${mobile ? '3rem' : '5rem'};letter-spacing:-0.03em;opacity:0.25">OpenAI</span>`;
+
+    dots.transition(t)
+      .attr('fill', d => d.lab === 'OpenAI' ? OAI_ACCENT : GREY)
+      .attr('opacity', d => d.lab === 'OpenAI' ? 0.9 : 0.3)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.5);
+    dots.style('pointer-events', d => d.lab === 'OpenAI' ? 'auto' : 'none')
+      .style('cursor', d => d.lab === 'OpenAI' ? 'pointer' : 'default');
+    // Raise OpenAI dots to front, then open-weight ones on top of those
+    dots.filter(d => d.lab === 'OpenAI' && !d.ow).raise();
+    dots.filter(d => d.lab === 'OpenAI' && d.ow).raise();
+
+    // Annotate both gpt-oss models — label to the right in white space
+    const oss120 = data.find(d => d.model === 'gpt-oss-120b');
+    const oss20 = data.find(d => d.model === 'gpt-oss-20b');
+    if (oss120 && oss20) {
+      const px1 = x(new Date(oss120.date)) + jitter(oss120.model, 5);
+      const py1 = y(oss120.mmlu) + jitter(oss120.model + 'y', 4);
+      const px2 = x(new Date(oss20.date)) + jitter(oss20.model, 5);
+      const py2 = y(oss20.mmlu) + jitter(oss20.model + 'y', 4);
+
+      const sz1 = r(oss120.params), sz2 = r(oss20.params);
+      const vr1 = Math.sqrt(sz1 * sz1 * 0.7 / Math.PI);
+      const vr2 = Math.sqrt(sz2 * sz2 * 0.7 / Math.PI);
+
+      // On mobile: label to the LEFT in white space. On desktop: below with curves.
+      const fontSize = mobile ? 10 : 12;
+
+      if (mobile) {
+        // Mobile: label left-aligned in the empty left half of chart
+        const textX = 10;
+        const textY = (py1 + py2) / 2;
+
+        annoLayer.append('line').attr('x1', px1 - vr1 - 6).attr('y1', py1)
+          .attr('x2', textX + 140).attr('y2', textY - 6)
+          .attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+        annoLayer.append('line').attr('x1', px2 - vr2 - 6).attr('y1', py2)
+          .attr('x2', textX + 140).attr('y2', textY + 6)
+          .attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+
+        annoLayer.append('text').attr('x', textX).attr('y', textY)
+          .text('gpt-oss-120b & 20b').attr('font-size', '11px')
+          .attr('font-weight', '700').attr('fill', '#dc2626').attr('text-anchor', 'start');
+        annoLayer.append('text').attr('x', textX).attr('y', textY + 14)
+          .text('First open-weights since 2019').attr('font-size', '9px')
+          .attr('fill', '#dc2626').attr('text-anchor', 'start');
+      } else {
+        // Desktop: curved lines spreading apart then meeting at label below
+        const labelX = (px1 + px2) / 2;
+        const labelY = Math.max(py1, py2) + 90;
+        const textY1 = labelY;
+        const textY2 = labelY + 16;
+
+        annoLayer.append('path')
+          .attr('d', `M${px1 - vr1 - 4},${py1} C${px1 - vr1 - 40},${(py1 + labelY) / 2} ${labelX - 30},${labelY - 30} ${labelX - 12},${textY1 - fontSize - 4}`)
+          .attr('fill', 'none').attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+        annoLayer.append('path')
+          .attr('d', `M${px2 + vr2 + 4},${py2} C${px2 + vr2 + 40},${(py2 + labelY) / 2} ${labelX + 30},${labelY - 30} ${labelX + 12},${textY1 - fontSize - 4}`)
+          .attr('fill', 'none').attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+
+        annoLayer.append('text').attr('x', labelX).attr('y', textY1)
+          .text('gpt-oss-120b & 20b').attr('font-size', fontSize + 'px')
+          .attr('font-weight', '700').attr('fill', '#dc2626').attr('text-anchor', 'middle');
+        annoLayer.append('text').attr('x', labelX).attr('y', textY2)
+          .text('First open-weights since 2019').attr('font-size', '15px')
+          .attr('fill', '#dc2626').attr('text-anchor', 'middle');
+      }
+    }
+    // Annotate GPT-2
+    const gpt2 = data.find(d => d.model === 'GPT-2');
+    if (gpt2) {
+      const px = x(new Date(gpt2.date)) + jitter(gpt2.model, 5);
+      const py = y(gpt2.mmlu) + jitter(gpt2.model + 'y', 4);
+      annoLayer.append('text').attr('x', px + 10).attr('y', py + 4)
+        .text('GPT-2 (2019)').attr('font-size', mobile ? '9px' : '10px')
+        .attr('font-weight', '600').attr('fill', '#dc2626');
+    }
+    // Annotate GPT-5.4
+    const gpt5 = data.find(d => d.model.includes('GPT-5.4'));
+    if (gpt5) {
+      const px = x(new Date(gpt5.date)) + jitter(gpt5.model, 5);
+      const py = y(gpt5.mmlu) + jitter(gpt5.model + 'y', 4);
+      annoLayer.append('text').attr('x', px - 10).attr('y', py - 10)
+        .text('GPT-5.4').attr('font-size', mobile ? '9px' : '11px')
+        .attr('font-weight', '700').attr('fill', '#dc2626').attr('text-anchor', 'end');
+      annoLayer.append('text').attr('x', px - 10).attr('y', py + 4)
+        .text('closed').attr('font-size', mobile ? '8px' : '9px')
+        .attr('fill', '#dc2626').attr('opacity', 0.6).attr('text-anchor', 'end');
+    }
+  }
+
+  else if (step === 4) {
+    // ── Alibaba focus ──
+    legendEl.innerHTML = `<span style="color:${ALI_ACCENT};font-weight:800;font-size:${mobile ? '3rem' : '5rem'};letter-spacing:-0.03em;opacity:0.25">Alibaba</span>`;
+
+    dots.transition(t)
+      .attr('fill', d => d.lab === 'Alibaba' ? ALI_ACCENT : GREY)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', 'none')
+      .attr('opacity', d => d.lab === 'Alibaba' ? 0.9 : 0.3);
+    dots.style('pointer-events', d => d.lab === 'Alibaba' ? 'auto' : 'none')
+      .style('cursor', d => d.lab === 'Alibaba' ? 'pointer' : 'default');
+    // Raise Alibaba dots to front
+    dots.filter(d => d.lab === 'Alibaba').raise();
+
+    // Annotate Qwen3.6-Plus (closed, MMLU estimated)
+    const q36 = data.find(d => d.model === 'Qwen3.6-Plus');
+    if (q36) {
+      const px = x(new Date(q36.date)) + jitter(q36.model, 5);
+      const py = y(q36.mmlu) + jitter(q36.model + 'y', 4);
+      const sz = r(q36.params);
+      const symbolArea = sz * sz * 0.7;
+      const visualR = Math.sqrt(symbolArea / Math.PI);
+
+      // Dashed uncertainty arrows through the dot
+      const arrowTop = py - visualR - 14;
+      const arrowBot = py + visualR + 14;
+      annoLayer.append('line')
+        .attr('x1', px).attr('y1', arrowTop).attr('x2', px).attr('y2', arrowBot)
+        .attr('stroke', ALI_ACCENT).attr('stroke-width', 1).attr('stroke-dasharray', '3,2');
+      annoLayer.append('path')
+        .attr('d', `M${px-4},${arrowTop+6} L${px},${arrowTop} L${px+4},${arrowTop+6}`)
+        .attr('fill', 'none').attr('stroke', ALI_ACCENT).attr('stroke-width', 1);
+      annoLayer.append('path')
+        .attr('d', `M${px-4},${arrowBot-6} L${px},${arrowBot} L${px+4},${arrowBot-6}`)
+        .attr('fill', 'none').attr('stroke', ALI_ACCENT).attr('stroke-width', 1);
+
+      const fontSize1 = mobile ? 11 : 16;
+      if (mobile) {
+        // Mobile: label to the LEFT in white space
+        const textX = 10;
+        const textY = py;
+        annoLayer.append('line').attr('x1', px - visualR - 6).attr('y1', py)
+          .attr('x2', textX + 100).attr('y2', textY)
+          .attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+        annoLayer.append('text').attr('x', textX).attr('y', textY)
+          .text('Qwen3.6-Plus').attr('font-size', fontSize1 + 'px')
+          .attr('font-weight', '700').attr('fill', '#dc2626').attr('text-anchor', 'start');
+        annoLayer.append('text').attr('x', textX).attr('y', textY + 14)
+          .text('MMLU not yet published').attr('font-size', '9px')
+          .attr('fill', '#dc2626').attr('font-style', 'italic').attr('text-anchor', 'start');
+      } else {
+        // Desktop: label below
+        const gap = 6;
+        const lineY1 = arrowBot + gap;
+        const lineY2 = lineY1 + 20;
+        const textY1 = lineY2 + fontSize1 + 4;
+        const textY2 = textY1 + 16;
+        annoLayer.append('line')
+          .attr('x1', px).attr('y1', lineY1)
+          .attr('x2', px).attr('y2', lineY2)
+          .attr('stroke', '#dc2626').attr('stroke-width', 0.8);
+        annoLayer.append('text').attr('x', px).attr('y', textY1)
+          .text('Qwen3.6-Plus').attr('font-size', fontSize1 + 'px')
+          .attr('font-weight', '700').attr('fill', '#dc2626').attr('text-anchor', 'middle');
+        annoLayer.append('text').attr('x', px).attr('y', textY2)
+          .text('MMLU not yet published').attr('font-size', '12px')
+          .attr('fill', '#dc2626').attr('font-style', 'italic').attr('text-anchor', 'middle');
+      }
+    }
+
+    // Annotate Qwen3.5-Omni-Plus (closed, MMLU estimated)
+    const qOmni = data.find(d => d.model === 'Qwen3.5-Omni-Plus');
+    if (qOmni) {
+      const opx = x(new Date(qOmni.date)) + jitter(qOmni.model, 5);
+      const opy = y(qOmni.mmlu) + jitter(qOmni.model + 'y', 4);
+      const osz = r(qOmni.params);
+      const oArea = osz * osz * 0.7;
+      const ovR = Math.sqrt(oArea / Math.PI);
+
+      // Dashed uncertainty arrows
+      const oTop = opy - ovR - 10;
+      const oBot = opy + ovR + 10;
+      annoLayer.append('line')
+        .attr('x1', opx).attr('y1', oTop).attr('x2', opx).attr('y2', oBot)
+        .attr('stroke', ALI_ACCENT).attr('stroke-width', 1).attr('stroke-dasharray', '3,2');
+      annoLayer.append('path')
+        .attr('d', `M${opx-3},${oTop+5} L${opx},${oTop} L${opx+3},${oTop+5}`)
+        .attr('fill', 'none').attr('stroke', ALI_ACCENT).attr('stroke-width', 1);
+      annoLayer.append('path')
+        .attr('d', `M${opx-3},${oBot-5} L${opx},${oBot} L${opx+3},${oBot-5}`)
+        .attr('fill', 'none').attr('stroke', ALI_ACCENT).attr('stroke-width', 1);
+
+    }
+  }
+}
+
+// ════════════════════════════════════════
+//  SCROLL HANDLER (continuous + observer)
+// ════════════════════════════════════════
+function initScroll(data) {
+  const steps = document.querySelectorAll('.step');
+  const step0 = steps[0];
+  // Animation completes at the END of the spacer (steps[1]), well before the text card (steps[2])
+  const spacer = steps[1];
+
+  // GPT-2 chart target
+  const gpt2 = data.find(d => d.model === 'GPT-2');
+  const mobile = W < 700;
+  const gpt2TargetX = gpt2 ? x(new Date(gpt2.date)) + jitter(gpt2.model, 5) : iw * 0.05;
+  const gpt2TargetY = gpt2 ? y(gpt2.mmlu) + jitter(gpt2.model + 'y', 4) : ih * 0.8;
+  const startX = mobile ? (W / 2 - margin.left) : iw / 2;
+  const startY = mobile ? ih * 0.62 : ih / 2 - 20;
+  const charSize = mobile ? 55 : 90;
+  // GPT-2 diamond body spans 2*charSize in the character drawing.
+  // The actual dot on the chart has size r(1.5). We need the diamond body to match that.
+  // d3.symbolDiamond.size(r(1.5)^2 * 0.8) → the rendered diamond is roughly r(1.5) wide.
+  // The character diamond spans 2*charSize wide. So endScale = r(1.5) / (2 * charSize).
+  const gpt2DotSize = r(1.5);  // radius of the GPT-2 dot on chart
+  const endScale = gpt2DotSize / charSize;
+
+  // Continuous scroll handler for step 0→1 transition
+  let lastProgress = -1;
+  function onScroll() {
+    const rect0 = step0.getBoundingClientRect();
+    const rectSpacer = spacer.getBoundingClientRect();
+
+    // Progress: 0 when step0 is centered, 1 when spacer bottom reaches viewport center
+    const viewMid = window.innerHeight / 2;
+    const s0mid = rect0.top + rect0.height / 2;
+    const spacerEnd = rectSpacer.top + rectSpacer.height;
+
+    // Compute progress regardless of bounds
+    const raw = (viewMid - s0mid) / (spacerEnd - s0mid);
+    const progress = Math.max(0, Math.min(1, raw));
+
+    if (Math.abs(progress - lastProgress) > 0.003) {
+      lastProgress = progress;
+
+      if (progress <= 0.01) {
+        // Fully at step 0 — hide everything, show character full size
+        axisLayer.attr('opacity', 0);
+        document.getElementById('headline').style.opacity = 0;
+        document.getElementById('scroll-hint').style.opacity = 0.6;
+        dots.interrupt().attr('fill', GREY).attr('opacity', 0)
+          .attr('stroke', '#fff').attr('stroke-width', 1.5);
+        annoLayer.selectAll('.gpt2-character')
+          .attr('transform', `translate(${startX},${startY}) scale(1)`);
+      } else {
+        const ease = d3.easeCubicInOut(progress);
+        const cx = startX + (gpt2TargetX - startX) * ease;
+        const cy = startY + (gpt2TargetY - startY) * ease;
+        const sc = 1 + (endScale - 1) * ease;
+
+        annoLayer.selectAll('.gpt2-character')
+          .attr('transform', `translate(${cx},${cy}) scale(${sc})`);
+
+        // Flash ✨ when character lands
+        if (progress > 0.92 && !annoLayer.select('.sparkle').size()) {
+          annoLayer.append('text').attr('class', 'sparkle')
+            .attr('x', gpt2TargetX).attr('y', gpt2TargetY - 12)
+            .text('\u2728').attr('font-size', '24px').attr('text-anchor', 'middle')
+            .attr('opacity', 1)
+            .transition().duration(1200).attr('opacity', 0).remove();
+        }
+        if (progress < 0.5) {
+          annoLayer.selectAll('.sparkle').remove();
+        }
+
+        const chartOpacity = Math.min(1, progress * 3);
+        axisLayer.attr('opacity', chartOpacity);
+        document.getElementById('headline').style.opacity = chartOpacity;
+        document.getElementById('scroll-hint').style.opacity = Math.max(0, 0.6 - progress * 3);
+        dots.attr('fill', GREY).attr('opacity', chartOpacity * 0.6)
+          .attr('stroke', '#fff').attr('stroke-width', 1.5);
+      }
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // IntersectionObserver for step triggers (steps 1–4)
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const stepVal = entry.target.dataset.step;
+        if (stepVal === '0b' || stepVal === 'end-spacer') return;
+        goToStep(+stepVal, data);
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+
+  steps.forEach(s => observer.observe(s));
+}
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+fetch('data/mmlu_data.json').then(r => r.json()).then(data => {
+  data.sort((a, b) => a.date.localeCompare(b.date));
+  setupChart(data);
+  renderDots(data);
+  goToStep(0, data);
+  initScroll(data);
+
+  // Resize handler
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      setupChart(data);
+      renderDots(data);
+      goToStep(currentStep, data);
+    }, 200);
+  });
+});
+</script>
+</body>
+</html>
