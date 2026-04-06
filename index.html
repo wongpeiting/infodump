@@ -280,7 +280,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
     </div>
     <div class="chart-legend" id="legend"></div>
     <!-- HTML speech bubble overlay (works on iOS unlike SVG foreignObject) -->
-    <div id="speech-bubble-overlay" class="speech-bubble speech-bubble-down" style="position:absolute;z-index:5;display:none;left:50%;transform:translateX(-70%);top:8vh;max-width:320px">
+    <div id="speech-bubble-overlay" class="speech-bubble speech-bubble-right" style="position:absolute;z-index:5;display:none;max-width:320px">
       <h2>Hi. I&rsquo;m GPT-2.</h2>
       <p>Back in February 2019, it was just me. OpenAI built me and gave me away &ndash; free for anyone to download, take apart and learn&nbsp;from.</p>
       <p>I wasn&rsquo;t very smart. But I was <em>open</em>. That used to mean something in this&nbsp;industry.</p>
@@ -669,29 +669,7 @@ function drawGPT2Character(layer, cx, cy, size) {
     .attr('stroke-linecap', 'round');
   g.append('circle').attr('cx', s * 0.45).attr('cy', s * 1.35).attr('r', s * 0.04).attr('fill', '#1e293b');
 
-  // Speech bubble (middle layer) — left on desktop, above on mobile
-  const isMobile = window.innerWidth < 700;
-  const bw = isMobile ? Math.min(280, window.innerWidth - 60) : 320;
-  const bh = isMobile ? 300 : 320;
-  const fo = g.append('foreignObject')
-    .attr('class', 'gpt2-bubble-fo')
-    .attr('x', isMobile ? -bw / 2 : -s * 1.3 - bw)
-    .attr('y', isMobile ? -s * 1.3 - bh : -bh + s * 0.1)
-    .attr('width', bw)
-    .attr('height', bh);
-
-  fo.attr('style', 'overflow:visible');
-
-  fo.append('xhtml:div')
-    .attr('class', 'speech-bubble speech-bubble-right')
-    .html(`
-      <h2>Hi. I\u2019m GPT-2.</h2>
-      <p>Back in February 2019, it was just me. OpenAI built me and gave me away \u2013 free for anyone to download, take apart and learn\u00a0from.</p>
-      <p>I wasn\u2019t very smart. But I was <em>open</em>. That used to mean something in this\u00a0industry.</p>
-      <p class="kicker">Then things got\u00a0complicated.</p>
-    `);
-
-  // Arms drawn LAST so they render on top of the speech bubble
+  // Arms drawn LAST so they render on top
   const leftArm = g.append('g').attr('class', 'wave-left')
     .attr('transform-origin', `${-s * 0.7}px ${-s * 0.05}px`);
   leftArm.append('path')
@@ -729,7 +707,20 @@ function goToStep(step, data) {
     axisLayer.attr('opacity', 0);
     document.getElementById('headline').style.opacity = 0;
     document.getElementById('scroll-hint').style.opacity = 0.6;
-    document.getElementById('speech-bubble-overlay').style.display = 'block';
+    const bubble = document.getElementById('speech-bubble-overlay');
+    bubble.style.display = 'block';
+    bubble.style.opacity = 1;
+    if (mobile) {
+      bubble.style.left = '50%';
+      bubble.style.transform = 'translateX(-50%)';
+      bubble.style.top = '5vh';
+      bubble.className = 'speech-bubble speech-bubble-down';
+    } else {
+      bubble.style.left = (margin.left + charX - 360) + 'px';
+      bubble.style.top = (margin.top + charY - 140) + 'px';
+      bubble.style.transform = 'none';
+      bubble.className = 'speech-bubble speech-bubble-right';
+    }
     // Force reset ALL dot properties — fill, opacity, stroke
     dots.interrupt()
       .attr('fill', GREY).attr('opacity', 0)
