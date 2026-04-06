@@ -82,11 +82,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
   .article__content{padding:2rem 1rem 1.5rem}
   .article__content p{font-size:0.95rem}
   .article__content h2{font-size:1.3rem}
+  .article__header h1{font-size:2rem}
+  .article__header .standfirst{font-size:1rem}
+  .article__content .drop-cap::first-letter{font-size:2.8em}
 }
 
 /* ── ai2html ── */
-#g-china-share-box{container-type:inline-size;container-name:g-china-share-box}
-#g-china-share-box,#g-china-share-box .g-artboard{margin:0}
+#g-china-share-box{container-type:inline-size;container-name:g-china-share-box;max-width:100%;overflow:hidden}
+#g-china-share-box,#g-china-share-box .g-artboard{margin:0;max-width:100%}
 #g-china-share-box p{margin:0}
 #g-china-share-box .g-aiAbs{position:absolute}
 #g-china-share-box .g-aiImg{position:absolute;top:0;display:block;width:100%!important}
@@ -111,8 +114,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#1a1a1a;over
 #g-china-share-mobile .g-cstyle0{color:rgb(220,38,38)}
 
 /* ── ai2html: openai_trails ── */
-#g-openai_trails-box{container-type:inline-size;container-name:g-openai_trails-box}
-#g-openai_trails-box,#g-openai_trails-box .g-artboard{margin:0}
+#g-openai_trails-box{container-type:inline-size;container-name:g-openai_trails-box;max-width:100%;overflow:hidden}
+#g-openai_trails-box,#g-openai_trails-box .g-artboard{margin:0;max-width:100%}
 #g-openai_trails-box p{margin:0}
 #g-openai_trails-box .g-aiAbs{position:absolute}
 #g-openai_trails-box .g-aiImg{position:absolute;top:0;display:block;width:100%!important}
