@@ -729,6 +729,9 @@ function goToStep(step, data) {
     axisLayer.attr('opacity', 0);
     document.getElementById('headline').style.opacity = 0;
     document.getElementById('scroll-hint').style.opacity = 0.6;
+    const charSize = mobile ? 55 : 90;
+    const charX = mobile ? (W / 2 - margin.left) : iw / 2;
+    const charY = mobile ? ih * 0.58 : ih / 2 - 20;
     const bubble = document.getElementById('speech-bubble-overlay');
     if (mobile) {
       bubble.style.display = 'block';
@@ -749,9 +752,6 @@ function goToStep(step, data) {
       .attr('stroke', '#fff').attr('stroke-width', 1.5);
     // Always recreate the character fresh
     annoLayer.selectAll('.gpt2-character').remove();
-    const charSize = mobile ? 55 : 90;
-    const charX = mobile ? (W / 2 - margin.left) : iw / 2;
-    const charY = mobile ? ih * 0.72 : ih / 2 - 20;
     drawGPT2Character(annoLayer, charX, charY, charSize);
   }
 
@@ -994,7 +994,7 @@ function initScroll(data) {
   const gpt2TargetX = gpt2 ? x(new Date(gpt2.date)) + jitter(gpt2.model, 5) : iw * 0.05;
   const gpt2TargetY = gpt2 ? y(gpt2.mmlu) + jitter(gpt2.model + 'y', 4) : ih * 0.8;
   const startX = mobile ? (W / 2 - margin.left) : iw / 2;
-  const startY = mobile ? ih * 0.72 : ih / 2 - 20;
+  const startY = mobile ? ih * 0.58 : ih / 2 - 20;
   const charSize = mobile ? 55 : 90;
   // GPT-2 diamond body spans 2*charSize in the character drawing.
   // The actual dot on the chart has size r(1.5). We need the diamond body to match that.
