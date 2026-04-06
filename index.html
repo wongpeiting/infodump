@@ -511,8 +511,8 @@ function setupChart(data) {
   iw = W - margin.left - margin.right;
   ih = H - margin.top - margin.bottom;
 
-  d3.select('#chart-wrap svg').remove();
-  svg = d3.select('#chart-wrap').append('svg').attr('width', W).attr('height', H);
+  d3.select('#chart-svg').remove();
+  svg = d3.select('#chart-wrap').append('svg').attr('id', 'chart-svg').attr('width', W).attr('height', H);
 
   // Clip
   svg.append('defs').append('clipPath').attr('id', 'clip')
